@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 class OrderForm extends JFrame {
@@ -17,6 +18,8 @@ class OrderForm extends JFrame {
     private JList selectedDishesList;
     private JLabel ListLabel;
     private JLabel ComboBoxLabel;
+    private JComboBox sideDishesComboBox;
+    private JLabel sideDishesLabel;
     private Vector selectedDishes = new Vector<>();
 
     public OrderForm(){
@@ -32,8 +35,18 @@ class OrderForm extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 Integer selectedItemIndex = dishesComboBox.getSelectedIndex();
                 Dish selectedDish = sheetDishes.dishes.get(selectedItemIndex);
-                selectedDishes.add(selectedDish);
-                selectedDishesList.setListData(selectedDishes);
+
+                ArrayList sideDishes = (ArrayList) selectedDish.getSideDishes();
+                System.out.println("Side dishes: " + sideDishes);
+
+                if(sideDishes!=null) {
+                    for(int i=0; i<sideDishes.size(); i++) {
+                        sideDishesComboBox.addItem(sideDishes.get(i));
+                    }
+                } else {
+                    selectedDishes.add(selectedDish);
+                    selectedDishesList.setListData(selectedDishes);
+                }
             }
         });
 
