@@ -6,18 +6,21 @@ public class Dish {
 
     private String key;
     private String value;
+    private Float price;
     private List<Dish> sideDishes;
 
-    public Dish(String key, String value)
+    public Dish(String key, String value, Float price)
     {
         this.key = key;
         this.value = value;
+        this.price = price;
     }
 
-    public Dish(String key, String value, List<Dish> sideDishes)
+    public Dish(String key, String value, Float price, List<Dish> sideDishes)
     {
         this.key = key;
         this.value = value;
+        this.price = price;
         this.sideDishes = sideDishes;
     }
 
@@ -35,6 +38,11 @@ public class Dish {
     public String getValue()
     {
         return value;
+    }
+
+    public Float getPrice()
+    {
+        return price;
     }
 
     public List<Dish> getSideDishes()
