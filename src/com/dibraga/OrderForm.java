@@ -8,6 +8,7 @@ import com.dibraga.utils.ComboBoxOption;
 import com.dibraga.sheets.Dishes;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +47,7 @@ class OrderForm extends JFrame {
     private ComboBoxOption selectedDish;
     private float Total = 0;
 
-    public OrderForm(List<Order> orders){
+    public OrderForm(JTable ordersTable){
 
         Dishes sheetDishes = new Dishes();
         Drinks sheetDrinks = new Drinks();
@@ -190,8 +191,8 @@ class OrderForm extends JFrame {
                     drinks.add(((ComboBoxOption)drinksList.getModel().getElementAt(i)).getValue());
                 }
 
-                Order order = new Order(dishes, drinks, Total, payment, delivery, observations);
-                orders.add(order);
+//                Order order = new Order(dishes, drinks, Total, payment, delivery, observations);
+                ((DefaultTableModel)ordersTable.getModel()).addRow(new Object[]{dishes, drinks,payment,delivery,observations,Total});
 
                 OrderForm.this.setVisible(false);
             }
