@@ -2,6 +2,7 @@ package com.dibraga;
 
 import com.dibraga.delivery.DeliveryOptions;
 import com.dibraga.payment.Payments;
+import com.dibraga.sheets.Drinks;
 import com.dibraga.utils.ComboBoxOption;
 import com.dibraga.sheets.Dishes;
 
@@ -9,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -31,21 +34,32 @@ class OrderForm extends JFrame {
     private JLabel deliveryLabel;
     private JTextArea observationsTextArea;
     private JLabel observationsLabel;
+    private JComboBox drinksComboBox;
+    private JLabel drinksLabel;
+    private JList drinksList;
 
     private Vector selectedSideDishes = new Vector<>();
     private Vector selectedFinalDishes = new Vector<>();
+    private Vector selectedDrinks = new Vector<>();
     private ComboBoxOption selectedDish;
     private float Total = 0;
 
     public OrderForm(){
 
         Dishes sheetDishes = new Dishes();
+        Drinks sheetDrinks = new Drinks();
+
         Payments paymentMethods = new Payments();
         DeliveryOptions deliveryOptions = new DeliveryOptions();
 
         dishesComboBox.addItem(null);
         for(int i=0; i<sheetDishes.getDishes().size(); i++) {
             dishesComboBox.addItem(sheetDishes.getDishes().get(i));
+        }
+
+        drinksComboBox.addItem(null);
+        for(int i=0; i<sheetDrinks.getDrinks().size(); i++) {
+            drinksComboBox.addItem(sheetDrinks.getDrinks().get(i));
         }
 
         paymentComboBox.addItem(null);
@@ -58,11 +72,36 @@ class OrderForm extends JFrame {
             deliveryComboBox.addItem(deliveryOptions.getDeliveryOptions().get(i));
         }
 
+        selectedDishesList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    Total = Total - ((ComboBoxOption)selectedFinalDishes.get(index)).getPrice();
+                    totalTextField.setText(Float.toString(Total));
+                    selectedFinalDishes.remove(index);
+                    selectedDishesList.setListData(selectedFinalDishes);
+                }
+            }
+        });
+
+        drinksList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    Total = Total - ((ComboBoxOption)selectedDrinks.get(index)).getPrice();
+                    totalTextField.setText(Float.toString(Total));
+                    selectedDrinks.remove(index);
+                    drinksList.setListData(selectedDrinks);
+                }
+            }
+        });
+
         sideDishesComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 Integer selectedItemIndex = sideDishesComboBox.getSelectedIndex() - 1;
-                System.out.println("Selected Item index: " + selectedItemIndex);
 
                 if(selectedItemIndex >= 0) {
                     ComboBoxOption selectedDish = sheetDishes.getSideDishes().get(selectedItemIndex);
@@ -96,6 +135,18 @@ class OrderForm extends JFrame {
             }
         });
 
+        drinksComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                Integer selectedItemIndex = drinksComboBox.getSelectedIndex() - 1;
+                ComboBoxOption selectedDrink = sheetDrinks.getDrinks().get(selectedItemIndex);
+                selectedDrinks.add(selectedDrink);
+                drinksList.setListData(selectedDrinks);
+                Total += selectedDrink.getPrice();
+                totalTextField.setText(Float.toString(Total));
+            }
+        });
+
         AddDish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -111,6 +162,9 @@ class OrderForm extends JFrame {
 
                 selectedFinalDishes.add(finalDish);
                 selectedDishesList.setListData(selectedFinalDishes);
+
+                selectedSideDishes.removeAllElements();
+                sideDishesList.setListData(selectedSideDishes);
             }
         });
 
@@ -123,7 +177,7 @@ class OrderForm extends JFrame {
 
         setTitle("Novo Pedido");
         getContentPane().add(newOrderPanel);
-        newOrderPanel.setPreferredSize(new Dimension(600, 800));
+        newOrderPanel.setPreferredSize(new Dimension(560, 800));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
