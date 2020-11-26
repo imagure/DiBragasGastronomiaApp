@@ -115,21 +115,23 @@ class OrderForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 Integer selectedItemIndex = dishesComboBox.getSelectedIndex() - 1;
-                selectedDish = sheetDishes.getDishes().get(selectedItemIndex);
-                ArrayList sideDishes = (ArrayList) selectedDish.getSideDishes();
+                if(selectedItemIndex>=0) {
+                    selectedDish = sheetDishes.getDishes().get(selectedItemIndex);
+                    ArrayList sideDishes = (ArrayList) selectedDish.getSideDishes();
 
-                DefaultComboBoxModel comboBoxModel=(DefaultComboBoxModel) sideDishesComboBox.getModel();
-                comboBoxModel.removeAllElements();
+                    DefaultComboBoxModel comboBoxModel=(DefaultComboBoxModel) sideDishesComboBox.getModel();
+                    comboBoxModel.removeAllElements();
 
-                DefaultListModel listModel=new DefaultListModel();
-                listModel.clear();
-                sideDishesList.setModel(listModel);
-                selectedSideDishes.removeAllElements();
+                    DefaultListModel listModel=new DefaultListModel();
+                    listModel.clear();
+                    sideDishesList.setModel(listModel);
+                    selectedSideDishes.removeAllElements();
 
-                if(sideDishes!=null) {
-                    sideDishesComboBox.addItem(null);
-                    for(int i=0; i<sideDishes.size(); i++) {
-                        sideDishesComboBox.addItem(sideDishes.get(i));
+                    if(sideDishes!=null) {
+                        sideDishesComboBox.addItem(null);
+                        for(int i=0; i<sideDishes.size(); i++) {
+                            sideDishesComboBox.addItem(sideDishes.get(i));
+                        }
                     }
                 }
             }
@@ -139,11 +141,13 @@ class OrderForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 Integer selectedItemIndex = drinksComboBox.getSelectedIndex() - 1;
-                ComboBoxOption selectedDrink = sheetDrinks.getDrinks().get(selectedItemIndex);
-                selectedDrinks.add(selectedDrink);
-                drinksList.setListData(selectedDrinks);
-                Total += selectedDrink.getPrice();
-                totalTextField.setText(Float.toString(Total));
+                if(selectedItemIndex>=0){
+                    ComboBoxOption selectedDrink = sheetDrinks.getDrinks().get(selectedItemIndex);
+                    selectedDrinks.add(selectedDrink);
+                    drinksList.setListData(selectedDrinks);
+                    Total += selectedDrink.getPrice();
+                    totalTextField.setText(Float.toString(Total));
+                }
             }
         });
 
