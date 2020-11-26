@@ -1,17 +1,19 @@
 package com.dibraga.payment;
 
+import com.dibraga.utils.ComboBoxOption;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Payments {
 
-    private List<PaymentMethod> paymentMethods = new ArrayList<>();
+    private List<ComboBoxOption> paymentMethods = new ArrayList<>();
 
     public Payments() {
-        PaymentMethod money = new PaymentMethod("Dinheiro", "money");
-        PaymentMethod credit_card = new PaymentMethod("Cartão de Crédito", "credit_card");
-        PaymentMethod debit_card = new PaymentMethod("Cartão de Débito", "debit_card");
-        PaymentMethod app = new PaymentMethod("Aplicativo", "app");
+        ComboBoxOption money = new ComboBoxOption("Dinheiro", "money");
+        ComboBoxOption credit_card = new ComboBoxOption("Cartão de Crédito", "credit_card");
+        ComboBoxOption debit_card = new ComboBoxOption("Cartão de Débito", "debit_card");
+        ComboBoxOption app = new ComboBoxOption("Aplicativo", "app");
 
         paymentMethods.add(money);
         paymentMethods.add(credit_card);
@@ -19,7 +21,7 @@ public class Payments {
         paymentMethods.add(app);
     }
 
-    public List<PaymentMethod> getPaymentMethods() {
+    public List<ComboBoxOption> getPaymentMethods() {
         return this.paymentMethods;
     }
 }

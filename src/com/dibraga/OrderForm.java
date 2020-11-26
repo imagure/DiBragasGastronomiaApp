@@ -1,7 +1,8 @@
 package com.dibraga;
 
+import com.dibraga.delivery.DeliveryOptions;
 import com.dibraga.payment.Payments;
-import com.dibraga.sheets.Dish;
+import com.dibraga.utils.ComboBoxOption;
 import com.dibraga.sheets.Dishes;
 
 import javax.swing.*;
@@ -26,16 +27,21 @@ class OrderForm extends JFrame {
     private JLabel sideDishesLabel;
     private JLabel totalLabel;
     private JLabel paymentLabel;
+    private JComboBox deliveryComboBox;
+    private JLabel deliveryLabel;
+    private JTextArea observationsTextArea;
+    private JLabel observationsLabel;
 
     private Vector selectedSideDishes = new Vector<>();
     private Vector selectedFinalDishes = new Vector<>();
-    private Dish selectedDish;
+    private ComboBoxOption selectedDish;
     private float Total = 0;
 
     public OrderForm(){
 
         Dishes sheetDishes = new Dishes();
         Payments paymentMethods = new Payments();
+        DeliveryOptions deliveryOptions = new DeliveryOptions();
 
         dishesComboBox.addItem(null);
         for(int i=0; i<sheetDishes.getDishes().size(); i++) {
@@ -47,6 +53,11 @@ class OrderForm extends JFrame {
             paymentComboBox.addItem(paymentMethods.getPaymentMethods().get(i));
         }
 
+        deliveryComboBox.addItem(null);
+        for(int i=0; i<deliveryOptions.getDeliveryOptions().size(); i++) {
+            deliveryComboBox.addItem(deliveryOptions.getDeliveryOptions().get(i));
+        }
+
         sideDishesComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -54,7 +65,7 @@ class OrderForm extends JFrame {
                 System.out.println("Selected Item index: " + selectedItemIndex);
 
                 if(selectedItemIndex >= 0) {
-                    Dish selectedDish = sheetDishes.getSideDishes().get(selectedItemIndex);
+                    ComboBoxOption selectedDish = sheetDishes.getSideDishes().get(selectedItemIndex);
                     selectedSideDishes.add(selectedDish);
                     sideDishesList.setListData(selectedSideDishes);
                 }
@@ -90,13 +101,13 @@ class OrderForm extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 Float finalPrice = selectedDish.getPrice();
                 for(int i=0; i<selectedSideDishes.size(); i++) {
-                    finalPrice += ((Dish) selectedSideDishes.get(i)).getPrice();
+                    finalPrice += ((ComboBoxOption) selectedSideDishes.get(i)).getPrice();
                 }
                 Total += finalPrice;
                 totalTextField.setText(Float.toString(Total));
 
                 String finalDishString = selectedDish.toString()+ " + " + selectedSideDishes.toString();
-                Dish finalDish = new Dish(finalDishString, finalDishString, finalPrice);
+                ComboBoxOption finalDish = new ComboBoxOption(finalDishString, finalDishString, finalPrice);
 
                 selectedFinalDishes.add(finalDish);
                 selectedDishesList.setListData(selectedFinalDishes);

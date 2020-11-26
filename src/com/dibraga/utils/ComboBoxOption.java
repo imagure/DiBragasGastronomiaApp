@@ -1,22 +1,28 @@
-package com.dibraga.sheets;
+package com.dibraga.utils;
 
 import java.util.List;
 
-public class Dish {
+public class ComboBoxOption {
 
     private String key;
     private String value;
     private Float price;
-    private List<Dish> sideDishes;
+    private List<ComboBoxOption> sideDishes;
 
-    public Dish(String key, String value, Float price)
+    public ComboBoxOption(String key, String value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+
+    public ComboBoxOption(String key, String value, Float price)
     {
         this.key = key;
         this.value = value;
         this.price = price;
     }
 
-    public Dish(String key, String value, Float price, List<Dish> sideDishes)
+    public ComboBoxOption(String key, String value, Float price, List<ComboBoxOption> sideDishes)
     {
         this.key = key;
         this.value = value;
@@ -45,7 +51,7 @@ public class Dish {
         return price;
     }
 
-    public List<Dish> getSideDishes()
+    public List<ComboBoxOption> getSideDishes()
     {
         return sideDishes;
     }
