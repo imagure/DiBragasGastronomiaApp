@@ -96,7 +96,7 @@ public class App {
                 JTable table =(JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 popupSelectedRow = table.rowAtPoint(point);
-                if (mouseEvent.isPopupTrigger() && table.getSelectedRow() != -1) {
+                if (mouseEvent.getButton()==3 && table.getSelectedRow() != -1) {
                     for (int i = 0; i < 7; i++) {
                         result[i] = (((DefaultTableModel)ordersTable.getModel()).getValueAt(popupSelectedRow,i).toString());
                     }
@@ -110,7 +110,7 @@ public class App {
                 JTable table =(JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 popupSelectedRow = table.rowAtPoint(point);
-                if (mouseEvent.isPopupTrigger() && table.getSelectedRow() != -1) {
+                if (mouseEvent.getButton()==3 && table.getSelectedRow() != -1) {
                     for (int i = 0; i < 7; i++) {
                         result[i] = (((DefaultTableModel)completedOrdersTable.getModel()).getValueAt(popupSelectedRow,i).toString());
                     }
