@@ -1,5 +1,6 @@
 package com.dibraga;
 
+import com.dibraga.payment.Payments;
 import com.dibraga.sheets.Dish;
 import com.dibraga.sheets.Dishes;
 
@@ -20,10 +21,11 @@ class OrderForm extends JFrame {
     private JList sideDishesList;
     private JButton AddDish;
     private JTextField totalTextField;
-    private JLabel ListLabel;
+    private JComboBox paymentComboBox;
     private JLabel ComboBoxLabel;
     private JLabel sideDishesLabel;
     private JLabel totalLabel;
+    private JLabel paymentLabel;
 
     private Vector selectedSideDishes = new Vector<>();
     private Vector selectedFinalDishes = new Vector<>();
@@ -33,10 +35,16 @@ class OrderForm extends JFrame {
     public OrderForm(){
 
         Dishes sheetDishes = new Dishes();
+        Payments paymentMethods = new Payments();
 
         dishesComboBox.addItem(null);
         for(int i=0; i<sheetDishes.getDishes().size(); i++) {
             dishesComboBox.addItem(sheetDishes.getDishes().get(i));
+        }
+
+        paymentComboBox.addItem(null);
+        for(int i=0; i<paymentMethods.getPaymentMethods().size(); i++) {
+            paymentComboBox.addItem(paymentMethods.getPaymentMethods().get(i));
         }
 
         sideDishesComboBox.addActionListener(new ActionListener() {
@@ -104,7 +112,7 @@ class OrderForm extends JFrame {
 
         setTitle("Novo Pedido");
         getContentPane().add(newOrderPanel);
-        newOrderPanel.setPreferredSize(new Dimension(480, 800));
+        newOrderPanel.setPreferredSize(new Dimension(600, 800));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
