@@ -6,6 +6,7 @@ import com.dibraga.payment.Payments;
 import com.dibraga.sheets.Drinks;
 import com.dibraga.utils.ComboBoxOption;
 import com.dibraga.sheets.Dishes;
+import com.dibraga.sheets.Clients;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -40,6 +41,8 @@ class OrderForm extends JFrame {
     private JComboBox drinksComboBox;
     private JLabel drinksLabel;
     private JList drinksList;
+    private JLabel clientLabel;
+    private JComboBox clientComboBox;
 
     private Vector selectedSideDishes = new Vector<>();
     private Vector selectedFinalDishes = new Vector<>();
@@ -51,6 +54,7 @@ class OrderForm extends JFrame {
 
         Dishes sheetDishes = new Dishes();
         Drinks sheetDrinks = new Drinks();
+        Clients sheetClients = new Clients();
 
         Payments paymentMethods = new Payments();
         DeliveryOptions deliveryOptions = new DeliveryOptions();
@@ -63,6 +67,11 @@ class OrderForm extends JFrame {
         drinksComboBox.addItem(null);
         for(int i=0; i<sheetDrinks.getDrinks().size(); i++) {
             drinksComboBox.addItem(sheetDrinks.getDrinks().get(i));
+        }
+
+        clientComboBox.addItem(null);
+        for(int i=0; i<sheetClients.getClients().size(); i++) {
+            clientComboBox.addItem(sheetClients.getClients().get(i));
         }
 
         paymentComboBox.addItem(null);
@@ -180,9 +189,12 @@ class OrderForm extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 List<String> dishes = new ArrayList<String>();
                 List<String> drinks = new ArrayList<String>();
-                String payment = paymentComboBox.getSelectedItem().toString();
-                String delivery = deliveryComboBox.getSelectedItem().toString();
+                String empty = new String("Nenhum");
+                String payment = paymentComboBox.getSelectedItem()!=null ? paymentComboBox.getSelectedItem().toString() : empty;
+                String delivery = deliveryComboBox.getSelectedItem()!=null ? deliveryComboBox.getSelectedItem().toString() : empty;
+                String client = clientComboBox.getSelectedItem()!=null ? clientComboBox.getSelectedItem().toString() : empty;
                 String observations = observationsTextArea.getText();
+                Float FinalTotal = Float.parseFloat(totalTextField.getText());
 
                 for(int i = 0; i< selectedDishesList.getModel().getSize();i++) {
                     dishes.add(((ComboBoxOption)selectedDishesList.getModel().getElementAt(i)).getValue());
@@ -191,8 +203,8 @@ class OrderForm extends JFrame {
                     drinks.add(((ComboBoxOption)drinksList.getModel().getElementAt(i)).getValue());
                 }
 
-//                Order order = new Order(dishes, drinks, Total, payment, delivery, observations);
-                ((DefaultTableModel)ordersTable.getModel()).addRow(new Object[]{dishes, drinks,payment,delivery,observations,Total});
+                ((DefaultTableModel)ordersTable.getModel()).addRow(new Object[]{dishes, drinks, client, payment,
+                                                                    delivery, observations, FinalTotal});
 
                 OrderForm.this.setVisible(false);
             }

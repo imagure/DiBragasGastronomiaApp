@@ -24,8 +24,8 @@ public class App {
     private JLabel completedOrdersLabel;
     static JFrame mainFrame = new JFrame("DiBragas");
 
-    private Float dailyTotal;
-    private String [] result = new String[6];
+    private float completedTotal = 0;
+    private String [] result = new String[7];
     private Integer popupSelectedRow;
     JPopupMenu ordersTablePopup = new JPopupMenu();
     JPopupMenu completedOrdersTablePopup = new JPopupMenu();
@@ -33,7 +33,7 @@ public class App {
     public App() {
         mainPanel.setPreferredSize(new Dimension(1024, 768));
 
-        String column_names[]= {"Pedido","Bebidas","Pagamento", "Entrega", "Observações", "Total"};
+        String column_names[]= {"Pedido","Bebidas", "Cliente", "Pagamento", "Entrega", "Observações", "Total"};
         DefaultTableModel ongoingOrdersTableModel = new DefaultTableModel(column_names, 0);
         ordersTable.setModel(ongoingOrdersTableModel);
 
@@ -53,8 +53,10 @@ public class App {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 ((DefaultTableModel)completedOrdersTable.getModel()).addRow(new Object [] {result[0], result[1],
-                                    result[2], result[3], result[4], result[5]});
+                                    result[2], result[3], result[4], result[5], result[6]});
                 ((DefaultTableModel)ordersTable.getModel()).removeRow(popupSelectedRow);
+                completedTotal += Float.parseFloat(result[6]);
+                dailyTotalTextField.setText(Float.toString(completedTotal));
             }
         });
         JMenuItem rollbackOrderItem = new JMenuItem("Voltar Pedido");
@@ -62,7 +64,9 @@ public class App {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 ((DefaultTableModel)ordersTable.getModel()).addRow(new Object [] {result[0], result[1],
-                        result[2], result[3], result[4], result[5]});
+                        result[2], result[3], result[4], result[5], result[6]});
+                completedTotal -= Float.parseFloat(result[6]);
+                dailyTotalTextField.setText(Float.toString(completedTotal));
                 ((DefaultTableModel)completedOrdersTable.getModel()).removeRow(popupSelectedRow);
             }
         });
@@ -78,6 +82,8 @@ public class App {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 ((DefaultTableModel)completedOrdersTable.getModel()).removeRow(popupSelectedRow);
+                completedTotal -= Float.parseFloat(result[6]);
+                dailyTotalTextField.setText(Float.toString(completedTotal));
             }
         });
         ordersTablePopup.add(completeOrderItem);
@@ -91,7 +97,7 @@ public class App {
                 Point point = mouseEvent.getPoint();
                 popupSelectedRow = table.rowAtPoint(point);
                 if (mouseEvent.isPopupTrigger() && table.getSelectedRow() != -1) {
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 7; i++) {
                         result[i] = (((DefaultTableModel)ordersTable.getModel()).getValueAt(popupSelectedRow,i).toString());
                     }
                     ordersTablePopup.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
@@ -105,7 +111,7 @@ public class App {
                 Point point = mouseEvent.getPoint();
                 popupSelectedRow = table.rowAtPoint(point);
                 if (mouseEvent.isPopupTrigger() && table.getSelectedRow() != -1) {
-                    for (int i = 0; i < 6; i++) {
+                    for (int i = 0; i < 7; i++) {
                         result[i] = (((DefaultTableModel)completedOrdersTable.getModel()).getValueAt(popupSelectedRow,i).toString());
                     }
                     completedOrdersTablePopup.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());

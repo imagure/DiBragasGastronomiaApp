@@ -8,6 +8,7 @@ public class ComboBoxOption {
     private String value;
     private Float price;
     private List<ComboBoxOption> sideDishes;
+    private Object clientData;
 
     public ComboBoxOption(String key, String value)
     {
@@ -28,6 +29,13 @@ public class ComboBoxOption {
         this.value = value;
         this.price = price;
         this.sideDishes = sideDishes;
+    }
+
+    public ComboBoxOption(String key, String value, Object clientData)
+    {
+        this.key = key;
+        this.value = value;
+        this.clientData = clientData;
     }
 
     @Override
@@ -54,5 +62,10 @@ public class ComboBoxOption {
     public List<ComboBoxOption> getSideDishes()
     {
         return sideDishes;
+    }
+
+    public Object getClientData()
+    {
+        return clientData;
     }
 }
