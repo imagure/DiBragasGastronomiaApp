@@ -1,17 +1,24 @@
 package com.dibraga;
 
+import com.dibraga.order.Order;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     private JPanel mainPanel;
     private JButton newOrderButton;
     private JTabbedPane mainTabbedPanel;
     private JPanel OrdersTab;
-    private JPanel MenuTab;
+    private JPanel Summary;
     static JFrame mainFrame = new JFrame("DiBragas");
+
+    private List<Order> orders = new ArrayList<Order>();
 
     public App() {
         mainPanel.setPreferredSize(new Dimension(1024, 768));
@@ -19,7 +26,7 @@ public class App {
         newOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                OrderForm orderForm = new OrderForm();
+                OrderForm orderForm = new OrderForm(orders);
                 orderForm.setVisible(true);
             }
         });

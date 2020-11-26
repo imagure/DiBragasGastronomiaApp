@@ -1,6 +1,7 @@
 package com.dibraga;
 
 import com.dibraga.delivery.DeliveryOptions;
+import com.dibraga.order.Order;
 import com.dibraga.payment.Payments;
 import com.dibraga.sheets.Drinks;
 import com.dibraga.utils.ComboBoxOption;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -44,7 +46,7 @@ class OrderForm extends JFrame {
     private ComboBoxOption selectedDish;
     private float Total = 0;
 
-    public OrderForm(){
+    public OrderForm(List<Order> orders){
 
         Dishes sheetDishes = new Dishes();
         Drinks sheetDrinks = new Drinks();
@@ -175,6 +177,22 @@ class OrderForm extends JFrame {
         submitOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                List<String> dishes = new ArrayList<String>();
+                List<String> drinks = new ArrayList<String>();
+                String payment = paymentComboBox.getSelectedItem().toString();
+                String delivery = deliveryComboBox.getSelectedItem().toString();
+                String observations = observationsTextArea.getText();
+
+                for(int i = 0; i< selectedDishesList.getModel().getSize();i++) {
+                    dishes.add(((ComboBoxOption)selectedDishesList.getModel().getElementAt(i)).getValue());
+                }
+                for(int i = 0; i< drinksList.getModel().getSize();i++) {
+                    drinks.add(((ComboBoxOption)drinksList.getModel().getElementAt(i)).getValue());
+                }
+
+                Order order = new Order(dishes, drinks, Total, payment, delivery, observations);
+                orders.add(order);
+
                 OrderForm.this.setVisible(false);
             }
         });
