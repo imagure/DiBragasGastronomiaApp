@@ -192,7 +192,7 @@ class OrderForm extends JFrame {
                 String empty = new String("Nenhum");
                 String payment = paymentComboBox.getSelectedItem()!=null ? paymentComboBox.getSelectedItem().toString() : empty;
                 String delivery = deliveryComboBox.getSelectedItem()!=null ? deliveryComboBox.getSelectedItem().toString() : empty;
-                String client = clientComboBox.getSelectedItem()!=null ? clientComboBox.getSelectedItem().toString() : empty;
+                String client = clientComboBox.getSelectedItem()!=null ? ((ComboBoxOption)clientComboBox.getSelectedItem()).getClientData() : empty;
                 String observations = observationsTextArea.getText();
                 Float FinalTotal = Float.parseFloat(totalTextField.getText());
 

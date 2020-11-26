@@ -8,7 +8,7 @@ public class ComboBoxOption {
     private String value;
     private Float price;
     private List<ComboBoxOption> sideDishes;
-    private Object clientData;
+    private String clientData;
 
     public ComboBoxOption(String key, String value)
     {
@@ -31,7 +31,7 @@ public class ComboBoxOption {
         this.sideDishes = sideDishes;
     }
 
-    public ComboBoxOption(String key, String value, Object clientData)
+    public ComboBoxOption(String key, String value, String clientData)
     {
         this.key = key;
         this.value = value;
@@ -64,8 +64,8 @@ public class ComboBoxOption {
         return sideDishes;
     }
 
-    public Object getClientData()
+    public String getClientData()
     {
-        return clientData;
+        return key + ", " + clientData;
     }
 }
